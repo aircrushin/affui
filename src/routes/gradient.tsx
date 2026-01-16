@@ -103,7 +103,7 @@ function GradientGenerator() {
   }, [])
 
   return (
-    <div className="min-h-screen bg-background p-6">
+    <div className="min-h-screen bg-background p-24">
       <div className="max-w-7xl mx-auto">
         <h1 className="text-3xl font-bold mb-2">弥散渐变生成器</h1>
         <p className="text-muted-foreground mb-6">
