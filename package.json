@@ -1,5 +1,7 @@
 {
   "name": "affui",
+  "version": "1.0.0",
+  "description": "基于弥散渐变美学的视觉实验项目",
   "private": true,
   "type": "module",
   "scripts": {

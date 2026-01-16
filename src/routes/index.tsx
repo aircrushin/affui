@@ -10,17 +10,13 @@ export const Route = createFileRoute('/')({
 function LandingPage() {
   return (
     <DiffusedBackground className="text-slate-800">
-      <div className="container mx-auto px-4 min-h-screen flex flex-col justify-center py-20">
+      <div className="container mx-auto px-4 min-h-screen flex flex-col justify-center py-24">
         {/* Hero Section */}
         <div className="max-w-4xl mx-auto text-center space-y-8 mb-20 animate-in fade-in slide-in-from-bottom-10 duration-1000">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/40 backdrop-blur-md border border-white/30 text-sm font-medium text-slate-600 mb-4 animate-pulse">
-            <Sparkles size={16} className="text-purple-500" />
-            <span>全新视觉体验 · 现已发布</span>
-          </div>
 
-          <h1 className="text-6xl md:text-8xl font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-slate-900 to-slate-700 pb-2">
+          <h1 className="text-6xl md:text-8xl font-black tracking-tight text-transparent bg-clip-text bg-linear-to-r from-slate-900 to-slate-700 pb-2">
             让色彩
-            <span className="italic bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent px-2">
+            <span className="italic bg-linear-to-r from-amber-600 to-orange-500 bg-clip-text text-transparent px-2">
               呼吸
             </span>
           </h1>
@@ -33,12 +29,12 @@ function LandingPage() {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-8">
             <Link
               to="/gradient"
-              className="group relative px-8 py-4 bg-slate-900 text-white rounded-full font-semibold overflow-hidden transition-all hover:scale-105 hover:shadow-2xl hover:shadow-purple-500/20"
+              className="group relative px-8 py-4 bg-slate-900 text-white rounded-full font-semibold overflow-hidden transition-all hover:scale-105 hover:shadow-2xl hover:shadow-amber-500/20"
             >
               <span className="relative z-10 flex items-center gap-2">
                 立即体验 <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
               </span>
-              <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-pink-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              <div className="absolute inset-0 bg-linear-to-r from-amber-600 to-orange-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             </Link>
             
             <button className="px-8 py-4 rounded-full font-semibold bg-white/50 backdrop-blur-sm border border-white/40 hover:bg-white/70 transition-all text-slate-700 hover:scale-105">
@@ -50,7 +46,7 @@ function LandingPage() {
         {/* Features Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
           <GlassCard className="group">
-            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-400 to-cyan-300 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+            <div className="w-12 h-12 rounded-xl bg-linear-to-br from-amber-500 to-amber-300 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
               <Palette className="text-white" size={24} />
             </div>
             <h3 className="text-xl font-bold mb-3 text-slate-800">极致柔和</h3>
@@ -60,7 +56,7 @@ function LandingPage() {
           </GlassCard>
 
           <GlassCard className="group">
-            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-400 to-pink-300 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+            <div className="w-12 h-12 rounded-xl bg-linear-to-br from-orange-500 to-amber-400 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
               <Zap className="text-white" size={24} />
             </div>
             <h3 className="text-xl font-bold mb-3 text-slate-800">灵动交互</h3>
@@ -70,7 +66,7 @@ function LandingPage() {
           </GlassCard>
 
           <GlassCard className="group">
-            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-orange-400 to-red-300 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+            <div className="w-12 h-12 rounded-xl bg-linear-to-br from-stone-500 to-stone-400 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
               <Sparkles className="text-white" size={24} />
             </div>
             <h3 className="text-xl font-bold mb-3 text-slate-800">深度定制</h3>

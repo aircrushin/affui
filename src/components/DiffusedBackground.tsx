@@ -14,9 +14,11 @@ type Blob = {
   size: number
   vx: number
   vy: number
+  delay: number
+  duration: number
 }
 
-const PRESET_COLORS = ['#a18cd1', '#fbc2eb', '#a6c1ee', '#ff9a9e', '#fad0c4']
+const PRESET_COLORS = ['#d4a574', '#e8c4a0', '#c9a87c', '#b8956e', '#deb887']
 
 export function DiffusedBackground({ className, children }: DiffusedBackgroundProps) {
   const containerRef = useRef<HTMLDivElement>(null)
@@ -30,8 +32,10 @@ export function DiffusedBackground({ className, children }: DiffusedBackgroundPr
       x: Math.random() * 100,
       y: Math.random() * 100,
       size: 40 + Math.random() * 20,
-      vx: (Math.random() - 0.5) * 0.2,
-      vy: (Math.random() - 0.5) * 0.2,
+      vx: (Math.random() - 0.5) * 0.05,
+      vy: (Math.random() - 0.5) * 0.05,
+      delay: Math.random() * 5,
+      duration: 3 + Math.random() * 5,
     }))
     setBlobs(initialBlobs)
   }, [])
@@ -84,7 +88,8 @@ export function DiffusedBackground({ className, children }: DiffusedBackgroundPr
               left: `${blob.x}%`,
               top: `${blob.y}%`,
               transform: 'translate(-50%, -50%)',
-              transition: 'transform 0.5s ease-out',
+              animationDelay: `${blob.delay}s`,
+              animationDuration: `${blob.duration}s`,
             }}
           />
         ))}

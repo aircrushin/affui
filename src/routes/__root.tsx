@@ -17,7 +17,15 @@ export const Route = createRootRoute({
         content: 'width=device-width, initial-scale=1',
       },
       {
-        title: 'TanStack Start Starter',
+        title: 'affui - 弥散渐变美学视觉实验',
+      },
+      {
+        name: 'description',
+        content: 'affui 是一个基于弥散渐变美学的视觉实验项目，探索极致柔和、灵动交互的现代 UI 设计。',
+      },
+      {
+        name: 'keywords',
+        content: 'affui, 弥散渐变, UI设计, 美学, React, TanStack Start, 视觉实验',
       },
     ],
     links: [
