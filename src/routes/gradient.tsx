@@ -89,18 +89,50 @@ function GradientGenerator() {
   }, [])
 
   const downloadImage = useCallback(async () => {
-    const previewElement = document.querySelector('[data-preview="true"]') as HTMLDivElement
-    if (!previewElement) return
-    const { default: html2canvas } = await import('html2canvas')
-    const canvas = await html2canvas(previewElement, {
-      backgroundColor: null,
-      scale: 2,
-    })
+    const width = 1920
+    const height = 1080
+    const canvas = document.createElement('canvas')
+    canvas.width = width
+    canvas.height = height
+    const ctx = canvas.getContext('2d')
+    if (!ctx) return
+
+    ctx.fillStyle = background
+    ctx.fillRect(0, 0, width, height)
+
+    const tempCanvas = document.createElement('canvas')
+    tempCanvas.width = width
+    tempCanvas.height = height
+    const tempCtx = tempCanvas.getContext('2d')
+    if (!tempCtx) return
+
+    for (const blob of blobs) {
+      const centerX = (blob.x / 100) * width
+      const centerY = (blob.y / 100) * height
+      const radius = (blob.size / 100) * Math.min(width, height) / 2
+
+      const gradient = tempCtx.createRadialGradient(
+        centerX, centerY, 0,
+        centerX, centerY, radius
+      )
+      gradient.addColorStop(0, blob.color + 'cc')
+      gradient.addColorStop(1, blob.color + '00')
+
+      tempCtx.fillStyle = gradient
+      tempCtx.beginPath()
+      tempCtx.arc(centerX, centerY, radius, 0, Math.PI * 2)
+      tempCtx.fill()
+    }
+
+    ctx.filter = `blur(${blurAmount}px)`
+    ctx.drawImage(tempCanvas, 0, 0)
+    ctx.filter = 'none'
+
     const link = document.createElement('a')
     link.download = `gradient-${Date.now()}.png`
     link.href = canvas.toDataURL('image/png')
     link.click()
-  }, [])
+  }, [blobs, background, blurAmount])
 
   return (
     <div className="min-h-screen bg-background p-24">
