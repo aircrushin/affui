@@ -1,22 +1,47 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { ArrowRight, Palette, Sparkles, Zap } from 'lucide-react'
+import { useState, useCallback } from 'react'
 import { DiffusedBackground } from '../components/DiffusedBackground'
 import { GlassCard } from '../components/GlassCard'
+import { ThemeControl, colorThemes, generateRandomTheme, type ColorTheme } from '../components/landing'
 
 export const Route = createFileRoute('/')({
   component: LandingPage,
 })
 
 function LandingPage() {
+  const [currentTheme, setCurrentTheme] = useState<ColorTheme>(colorThemes[0])
+  const [isThemeControlOpen, setIsThemeControlOpen] = useState(false)
+
+  const handleThemeChange = useCallback((theme: ColorTheme) => {
+    setCurrentTheme(theme)
+  }, [])
+
+  const handleRandomTheme = useCallback(() => {
+    setCurrentTheme(generateRandomTheme())
+  }, [])
   return (
-    <DiffusedBackground className="text-slate-800">
+    <DiffusedBackground
+      blobColors={currentTheme.colors}
+      backgroundColor={currentTheme.background}
+      className={currentTheme.textColor}
+    >
+      {/* Theme Control */}
+      <ThemeControl
+        currentTheme={currentTheme}
+        onThemeChange={handleThemeChange}
+        onRandomTheme={handleRandomTheme}
+        isOpen={isThemeControlOpen}
+        onToggle={() => setIsThemeControlOpen(!isThemeControlOpen)}
+      />
+
       <div className="container mx-auto px-4 min-h-screen flex flex-col justify-center py-24">
         {/* Hero Section */}
         <div className="max-w-4xl mx-auto text-center space-y-8 mb-20 animate-in fade-in slide-in-from-bottom-10 duration-1000">
 
           <h1 className="text-6xl md:text-8xl font-black tracking-tight text-transparent bg-clip-text bg-linear-to-r from-slate-900 to-slate-700 pb-2">
             让色彩
-            <span className="italic bg-linear-to-r from-amber-600 to-orange-500 bg-clip-text text-transparent px-2">
+            <span className={`italic bg-linear-to-r ${currentTheme.accentColor} bg-clip-text text-transparent px-2`}>
               呼吸
             </span>
           </h1>
@@ -29,16 +54,21 @@ function LandingPage() {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-8">
             <Link
               to="/gradient"
-              className="group relative px-8 py-4 bg-slate-900 text-white rounded-full font-semibold overflow-hidden transition-all hover:scale-105 hover:shadow-2xl hover:shadow-amber-500/20"
+              className="group relative px-8 py-4 bg-slate-900 text-white rounded-full font-semibold overflow-hidden transition-all hover:scale-105 hover:shadow-2xl"
+              style={{ boxShadow: `0 0 30px -10px ${currentTheme.colors[0]}` }}
             >
               <span className="relative z-10 flex items-center gap-2">
                 立即体验 <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
               </span>
-              <div className="absolute inset-0 bg-linear-to-r from-amber-600 to-orange-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              <div className={`absolute inset-0 bg-linear-to-r ${currentTheme.accentColor} opacity-0 group-hover:opacity-100 transition-opacity duration-300`} />
             </Link>
-            
-            <button className="px-8 py-4 rounded-full font-semibold bg-white/50 backdrop-blur-sm border border-white/40 hover:bg-white/70 transition-all text-slate-700 hover:scale-105">
-              了解更多
+
+            <button
+              onClick={() => setIsThemeControlOpen(!isThemeControlOpen)}
+              className="group relative px-8 py-4 rounded-full font-semibold bg-white/50 backdrop-blur-sm border border-white/40 hover:bg-white/70 transition-all hover:scale-105 flex items-center gap-2"
+            >
+              <Palette size={18} className="group-hover:rotate-12 transition-transform" />
+              {isThemeControlOpen ? '关闭主题' : '切换主题'}
             </button>
           </div>
         </div>
@@ -46,7 +76,7 @@ function LandingPage() {
         {/* Features Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
           <GlassCard className="group">
-            <div className="w-12 h-12 rounded-xl bg-linear-to-br from-amber-500 to-amber-300 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+            <div className={`w-12 h-12 rounded-xl bg-linear-to-br ${currentTheme.cardIconColors[0]} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}>
               <Palette className="text-white" size={24} />
             </div>
             <h3 className="text-xl font-bold mb-3 text-slate-800">极致柔和</h3>
@@ -56,7 +86,7 @@ function LandingPage() {
           </GlassCard>
 
           <GlassCard className="group">
-            <div className="w-12 h-12 rounded-xl bg-linear-to-br from-orange-500 to-amber-400 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+            <div className={`w-12 h-12 rounded-xl bg-linear-to-br ${currentTheme.cardIconColors[1]} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}>
               <Zap className="text-white" size={24} />
             </div>
             <h3 className="text-xl font-bold mb-3 text-slate-800">灵动交互</h3>
@@ -66,7 +96,7 @@ function LandingPage() {
           </GlassCard>
 
           <GlassCard className="group">
-            <div className="w-12 h-12 rounded-xl bg-linear-to-br from-stone-500 to-stone-400 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+            <div className={`w-12 h-12 rounded-xl bg-linear-to-br ${currentTheme.cardIconColors[2]} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}>
               <Sparkles className="text-white" size={24} />
             </div>
             <h3 className="text-xl font-bold mb-3 text-slate-800">深度定制</h3>

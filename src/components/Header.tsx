@@ -20,7 +20,7 @@ export default function Header() {
           <h1 className="text-2xl font-black tracking-tight">
             <Link
               to="/"
-              className="text-transparent bg-clip-text bg-linear-to-r from-amber-600 to-orange-500 hover:opacity-80 transition-opacity"
+              className="text-gray-800 font-light hover:opacity-80 transition-opacity"
             >
               affui
             </Link>

@@ -4,6 +4,8 @@ import { cn } from '../lib/utils'
 interface DiffusedBackgroundProps {
   className?: string
   children?: React.ReactNode
+  blobColors?: string[]
+  backgroundColor?: string
 }
 
 type Blob = {
@@ -18,9 +20,14 @@ type Blob = {
   duration: number
 }
 
-const PRESET_COLORS = ['#d4a574', '#e8c4a0', '#c9a87c', '#b8956e', '#deb887']
+const DEFAULT_COLORS = ['#d4a574', '#e8c4a0', '#c9a87c', '#b8956e', '#deb887']
 
-export function DiffusedBackground({ className, children }: DiffusedBackgroundProps) {
+export function DiffusedBackground({
+  className,
+  children,
+  blobColors = DEFAULT_COLORS,
+  backgroundColor = '#f8f9fa'
+}: DiffusedBackgroundProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const [blobs, setBlobs] = useState<Blob[]>([])
 
@@ -28,7 +35,7 @@ export function DiffusedBackground({ className, children }: DiffusedBackgroundPr
     // Initialize blobs
     const initialBlobs = Array.from({ length: 5 }).map((_, i) => ({
       id: `blob-${i}`,
-      color: PRESET_COLORS[i % PRESET_COLORS.length],
+      color: blobColors[i % blobColors.length],
       x: Math.random() * 100,
       y: Math.random() * 100,
       size: 40 + Math.random() * 20,
@@ -38,7 +45,7 @@ export function DiffusedBackground({ className, children }: DiffusedBackgroundPr
       duration: 3 + Math.random() * 5,
     }))
     setBlobs(initialBlobs)
-  }, [])
+  }, [blobColors])
 
   useEffect(() => {
     let animationFrameId: number
@@ -72,9 +79,10 @@ export function DiffusedBackground({ className, children }: DiffusedBackgroundPr
     <div
       ref={containerRef}
       className={cn(
-        'relative w-full min-h-screen overflow-hidden bg-[#f8f9fa] dark:bg-[#0a0a0a]',
+        'relative w-full min-h-screen overflow-hidden',
         className
       )}
+      style={{ backgroundColor }}
     >
       <div className="absolute inset-0 pointer-events-none">
         {blobs.map((blob) => (
