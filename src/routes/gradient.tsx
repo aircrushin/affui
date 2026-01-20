@@ -6,6 +6,7 @@ import {
   type ColorBlob,
   type Preset,
 } from '@/components/gradient'
+import { useToast } from '@/components/ui/Toast'
 
 const presets: Preset[] = [
   { name: '极光', colors: ['#00ff87', '#60efff', '#ff00ea'], background: '#0a0a1a' },
@@ -38,6 +39,7 @@ function generateRandomBlobs(colors: string[]): ColorBlob[] {
 }
 
 function GradientGenerator() {
+  const { addToast } = useToast()
   const [blobs, setBlobs] = useState<ColorBlob[]>(() =>
     generateRandomBlobs(presets[0].colors)
   )
@@ -50,7 +52,8 @@ function GradientGenerator() {
     setBlobs(generateRandomBlobs(preset.colors))
     setBackground(preset.background)
     setActivePreset(preset.name)
-  }, [])
+    addToast({ type: 'success', message: `已应用 "${preset.name}" 预设` })
+  }, [addToast])
 
   const randomize = useCallback(() => {
     const numColors = 3 + Math.floor(Math.random() * 3)
@@ -62,7 +65,8 @@ function GradientGenerator() {
     setBlobs(generateRandomBlobs(colors))
     setBackground(bg)
     setActivePreset(null)
-  }, [])
+    addToast({ type: 'info', message: '已生成随机渐变' })
+  }, [addToast])
 
   const addBlob = useCallback(() => {
     const newBlob: ColorBlob = {
@@ -74,12 +78,14 @@ function GradientGenerator() {
     }
     setBlobs((prev) => [...prev, newBlob])
     setActivePreset(null)
-  }, [])
+    addToast({ type: 'success', message: '已添加新颜色' })
+  }, [addToast])
 
   const removeBlob = useCallback((id: string) => {
     setBlobs((prev) => prev.filter((b) => b.id !== id))
     setActivePreset(null)
-  }, [])
+    addToast({ type: 'info', message: '已移除颜色' })
+  }, [addToast])
 
   const updateBlob = useCallback((id: string, updates: Partial<ColorBlob>) => {
     setBlobs((prev) =>
@@ -132,15 +138,21 @@ function GradientGenerator() {
     link.download = `gradient-${Date.now()}.png`
     link.href = canvas.toDataURL('image/png')
     link.click()
-  }, [blobs, background, blurAmount])
+
+    addToast({ type: 'success', message: '图片下载成功！' })
+  }, [blobs, background, blurAmount, addToast])
 
   return (
-    <div className="min-h-screen bg-background p-24">
+    <div className="min-h-screen bg-background p-6 md:p-12 animate-in fade-in duration-500">
       <div className="max-w-7xl mx-auto">
-        <h1 className="text-3xl font-bold mb-2">弥散渐变生成器</h1>
-        <p className="text-muted-foreground mb-6">
-          创建柔和、梦幻的弥散渐变效果
-        </p>
+        <div className="mb-8">
+          <h1 className="text-4xl font-bold mb-2 bg-linear-to-r from-slate-900 to-slate-700 bg-clip-text text-transparent">
+            弥散渐变生成器
+          </h1>
+          <p className="text-muted-foreground text-lg">
+            创建柔和、梦幻的弥散渐变效果
+          </p>
+        </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <GradientPreview

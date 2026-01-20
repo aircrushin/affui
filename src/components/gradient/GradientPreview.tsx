@@ -1,6 +1,7 @@
 import { Shuffle, Download } from 'lucide-react'
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import { ColorBlob } from './types'
+import { Button } from '../ui/Button'
 
 interface GradientPreviewProps {
   blobs: ColorBlob[]
@@ -18,19 +19,29 @@ export function GradientPreview({
   onDownload,
 }: GradientPreviewProps) {
   const canvasRef = useRef<HTMLDivElement>(null)
+  const [isDownloading, setIsDownloading] = useState(false)
+
+  const handleDownload = async () => {
+    setIsDownloading(true)
+    try {
+      await onDownload()
+    } finally {
+      setTimeout(() => setIsDownloading(false), 500)
+    }
+  }
 
   return (
-    <div className="lg:col-span-2">
+    <div className="lg:col-span-2 space-y-4">
       <div
         ref={canvasRef}
         data-preview="true"
-        className="relative w-full aspect-video rounded-xl overflow-hidden shadow-2xl"
+        className="relative w-full aspect-video rounded-2xl overflow-hidden shadow-2xl border-2 border-border/50 group"
         style={{ backgroundColor: background }}
       >
         {blobs.map((blob) => (
           <div
             key={blob.id}
-            className="absolute rounded-full"
+            className="absolute rounded-full transition-all duration-500"
             style={{
               backgroundColor: blob.color,
               width: `${blob.size}%`,
@@ -46,21 +57,26 @@ export function GradientPreview({
       </div>
 
       {/* 操作按钮 */}
-      <div className="flex gap-3 mt-4">
-        <button
+      <div className="flex flex-wrap gap-3">
+        <Button
           onClick={onRandomize}
-          className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:opacity-90 transition-opacity"
+          variant="secondary"
+          size="lg"
+          className="flex-1 sm:flex-none"
         >
-          <Shuffle size={18} />
+          <Shuffle size={18} className="mr-2" />
           随机生成
-        </button>
-        <button
-          onClick={onDownload}
-          className="flex items-center gap-2 px-4 py-2 bg-secondary text-secondary-foreground rounded-lg hover:opacity-90 transition-opacity"
+        </Button>
+        <Button
+          onClick={handleDownload}
+          variant="primary"
+          size="lg"
+          disabled={isDownloading}
+          className="flex-1 sm:flex-none"
         >
-          <Download size={18} />
-          下载图片
-        </button>
+          <Download size={18} className={`mr-2 ${isDownloading ? 'animate-bounce' : ''}`} />
+          {isDownloading ? '下载中...' : '下载图片'}
+        </Button>
       </div>
     </div>
   )
